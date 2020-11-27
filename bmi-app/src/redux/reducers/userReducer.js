@@ -1,15 +1,11 @@
 import {
-  GET_USER_STARTED,
-  GET_USER_SUCCESS,
-  GET_USER_ERROR,
+  GET_USERS_STARTED,
+  GET_USERS_SUCCESS,
+  GET_USERS_ERROR,
 
   CREATE_USER_STARTED,
   CREATE_USER_SUCCESS,
   CREATE_USER_ERROR,
-
-  FIND_USERNAME_STARTED,
-  FIND_USERNAME_SUCCESS,
-  FIND_USERNAME_ERROR,
 
   DELETE_USER_STARTED,
   DELETE_USER_SUCCESS,
@@ -22,35 +18,24 @@ const defaultState = {
   delMessage: '',
   createMessage: '',
   didCreate: false,
-  didLogin: false,
-  foundUser: null,
+  users: [],
 };
 
 function userReducer(state = defaultState, action) {
   switch (action.type) {
-    case GET_USER_STARTED:
+    case GET_USERS_STARTED:
       return Object.assign({}, state, {
         isLoading: true,
-        didLogin: false,
       });
-    case GET_USER_SUCCESS:
-      if (action.payload.data != null) {
-        return Object.assign({}, state, {
-          isLoading: false,
-          didLogin: true,
-        });
-      }
-      else {
-        return Object.assign({}, state, {
-          isLoading: true,
-          didLogin: false,
-        });
-      }
-
-    case GET_USER_ERROR:
+    case GET_USERS_SUCCESS:
       return Object.assign({}, state, {
         isLoading: false,
-        didLogin: false,
+        users: action.payload.data,
+      });
+    case GET_USERS_ERROR:
+      return Object.assign({}, state, {
+        isLoading: false,
+        users: [],
       });
 
     case CREATE_USER_STARTED:
@@ -69,24 +54,6 @@ function userReducer(state = defaultState, action) {
         isLoading: false,
         didCreate: false,
         createMessage: action.payload.message,
-      });
-
-    case FIND_USERNAME_STARTED:
-      return Object.assign({}, state, {
-        isLoading: true,
-        foundUser: null,
-      });
-
-    case FIND_USERNAME_SUCCESS:
-      return Object.assign({}, state, {
-        isLoading: false,
-        foundUser: action.payload.result,
-      });
-
-    case FIND_USERNAME_ERROR:
-      return Object.assign({}, state, {
-        isLoading: false,
-        foundUser: null,
       });
 
     case DELETE_USER_STARTED:

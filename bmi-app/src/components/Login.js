@@ -7,10 +7,11 @@ import { connect } from 'react-redux';
 class LoginForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { username: '', password: '', rememberMe: false, passFieldType: "password", checkPass: false };
+        this.state = { username: '', password: '' };
     }
 
     componentDidMount() {
+        this.props.dispatch(actions.getUsers());
     }
 
     handleUsernameChange = event => {
@@ -27,15 +28,15 @@ class LoginForm extends Component {
         event.preventDefault();
         const { username } = this.state;
         const { password } = this.state;
+        let isFound = false;
 
-        let account = {
-            username: username,
-            password: password
-        };
+        for (let i = 0; i < this.props.users.length; i++) {
+            if (this.props.users[i].username === username && this.props.users[i].password === password) {
+                isFound = true;
+            }
+        }
 
-        this.props.dispatch(actions.getUser(account));
-
-        if (this.props.didLogin) {
+        if (isFound) {
 
             alert("Login successful");
             localStorage.setItem("username", username);
@@ -66,7 +67,7 @@ class LoginForm extends Component {
                             </div>
                             <div className="form-group row">
                                 <label className="form-label">Password:</label>
-                                <input className="form-control" type={this.state.passFieldType} onChange={this.handlePasswordChange} id="pass" name="password" placeholder='Enter password' required size="10" /><br />
+                                <input className="form-control" type="password" onChange={this.handlePasswordChange} id="pass" name="password" placeholder='Enter password' required size="10" /><br />
                             </div>
                             <input className="btn bg-primary text-light" type="submit" value="Login" />
                             <h6>Don't have an account? <Link className="App-link" to="/Signup">Click here to start!</Link></h6>
@@ -79,7 +80,7 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = state => ({
-    didLogin: state.userReducer.didLogin,
+    users: state.userReducer.users,
 })
 
 export default connect(mapStateToProps)(LoginForm);

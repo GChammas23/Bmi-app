@@ -1,114 +1,117 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { Link } from 'react-router-dom';
 import actions from '../redux/actions/users';
 import NavBarComponent from '../components/Navbar';
+import Grid from '@material-ui/core/Grid';
+import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
+import { Input } from '@material-ui/core';
 
 class Calculator extends Component {
     constructor(props) {
         super(props);
-        this.insertNewUser = this.insertNewUser.bind(this);
-        this.state = { Username: '', Password: '', ConfPassword: '' };
+        this.computeBmi = this.computeBmi.bind(this);
+        this.state = { weight: 30, height: 1, bmi: 0 };
     }
 
     componentDidMount() {
     }
 
-    handleUsernameChange = event => {
+    handleWeightChange = (event, newValue) => {
         event.preventDefault();
-        this.setState({ Username: event.target.value });
-    };
+        this.setState({ weight: newValue });
+    }
 
-    handlePasswordChange = event => {
+    handleWeightInputChange = (event) => {
         event.preventDefault();
-        this.setState({ Password: event.target.value });
-    };
+        let newValue = Number(event.target.value);
+        this.setState({ weight: newValue });
+    }
 
-    handleConfPasswordChange = event => {
+    computeBmi = () => {
+        let weight = this.state.weight;
+        let height = this.state.height;
+
+        let bmi = Math.round(weight / Math.pow(height, 2));
+        this.setState({ bmi }, () => {
+            alert(this.state.bmi);
+        })
+    }
+
+    handleHeightChange = (event, newValue) => {
         event.preventDefault();
-        this.setState({ ConfPassword: event.target.value });
-    };
+        this.setState({ height: newValue });
+    }
 
-    insertNewUser = event => {
+    handleHeightInputChange = (event) => {
         event.preventDefault();
-        const { Username } = this.state;
-        const { Password } = this.state;
-        const { ConfPassword } = this.state;
-
-        let account = {
-            username: Username,
-            password: Password,
-        }
-
-        //Check if passwords length is valid
-        if (Password.length >= 8 && Password.length <= 20) {
-            //Check if both passwords are the same
-            if (Password === ConfPassword) {
-                //Check if username is already in use
-                this.props.dispatch(actions.findUsername({ username: Username }));
-
-                console.log(this.props.foundUser);
-
-                if (this.props.foundUser !== null) {
-                    alert("The username chosen is already in use!");
-                }
-                else {
-                    //Call the actions method
-                    this.props.dispatch(actions.createUser(account));
-
-                    if (this.props.didCreate) {
-                        alert("Account successfully created! Redirecting to home page");
-                        localStorage.setItem("username", account.Username);
-                        localStorage.setItem("password", account.pass);
-                    }
-                    else {
-                        alert("An error occured while trying to create your account");
-                    }
-                }
-
-            }
-            else {
-                alert("The passwords entered do not match!");
-            }
-        }
-        else {
-            alert("The password should have 8 to 20 characters!");
-        }
-
-    };
+        let newValue = Number(event.target.value);
+        this.setState({ height: newValue });
+    }
 
     render() {
         return (
             <div className="App">
                 <NavBarComponent history={this.props.history} />
                 <div className="home-body">
-                    <h1>Create an account</h1>
-                    <h6>Please fill the form below to sign up</h6>
-                    <Link className="App-link" to="/"> Go back </Link>
+                    <h1>Calculate your BMI</h1>
+                    <h6>Please fill the form below to find out your bmi</h6>
                 </div>
                 <div className="card">
                     <div className="card-body">
-                        <form onSubmit={this.insertNewUser} method="POST">
+                        <form>
                             <div className="form-group row">
-                                <label className="form-label">Username:</label>
-                                <input className="form-control" type="text" id="username" name="username" placeholder='Enter username' required size="10" onChange={this.handleUsernameChange} /><br />
+                                <Typography id="input-slider" gutterBottom>
+                                    Weight (kg)
+                                </Typography>
+                                <Grid container spacing={2} alignItems="center">
+                                    <Grid item xs>
+                                        <Slider value={this.state.weight}
+                                            onChange={this.handleWeightChange}
+                                            valueLabelDisplay="auto"
+                                            min={30}
+                                            max={200} />
+                                    </Grid>
+                                    <Grid item>
+                                        <Input value={this.state.weight}
+                                            margin="dense"
+                                            onChange={this.handleWeightInputChange}
+                                            inputProps={{
+                                                step: 0.5,
+                                                min: 30,
+                                                max: 200,
+                                                type: 'number',
+                                            }} />
+                                    </Grid>
+                                </Grid>
                             </div>
                             <div className="form-group row">
-                                <label className="form-label">Password:</label>
-                                <input className="form-control" type="password" id="password" aria-describedby="passwordHelpBlock" name="password" placeholder='Enter password' required size="10" onChange={this.handlePasswordChange} /><br />
-                                <small id="passwordHelpBlock" className="pass-text">
-                                    Your password must contain between 8 to 20 characters.
-                                </small>
+                                <Typography id="input-slider" gutterBottom>
+                                    Height (meters)
+                                </Typography>
+                                <Grid container spacing={2} alignItems="center">
+                                    <Grid item xs>
+                                        <Slider value={this.state.height}
+                                            onChange={this.handleHeightChange}
+                                            valueLabelDisplay="auto"
+                                            max={2.5}
+                                            step={0.1} />
+                                    </Grid>
+                                    <Grid item>
+                                        <Input value={this.state.height}
+                                            margin="dense"
+                                            onChange={this.handleHeightInputChange}
+                                            inputProps={{
+                                                step: 0.1,
+                                                min: 1,
+                                                max: 2.5,
+                                                type: 'number',
+                                            }} />
+                                    </Grid>
+                                </Grid>
                             </div>
-                            <div className="form-group row">
-                                <label className="form-label">Confirm password:</label>
-                                <input className="form-control" type="password" id="confPassword" aria-describedby="confasswordHelpBlock" name="confPassword" placeholder='Confirm password' required size="10" onChange={this.handleConfPasswordChange} /><br />
-                                <small id="confpasswordHelpBlock" className="pass-text">
-                                    Please make sure to match both passwords!
-                                </small>
-                            </div>
-                            <input className="btn bg-primary text-light" type="submit" value="Sign up" />
+                            <input className="btn bg-primary text-light" onClick={this.computeBmi} type="submit" value="Compute" />
                         </form>
                     </div>
                 </div>

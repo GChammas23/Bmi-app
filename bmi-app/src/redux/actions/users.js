@@ -1,13 +1,9 @@
-import { getUser, deleteUser, createUser, findUsername } from '../../actions/users.actions';
+import { getUsers, deleteUser, createUser } from '../../actions/users.actions';
 import { toast } from 'react-toastify'
 
-export const GET_USER_STARTED = 'GET_USER_STARTED'
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS'
-export const GET_USER_ERROR = 'GET_USER_ERROR'
-
-export const FIND_USERNAME_STARTED = 'FIND_USERNAME_STARTED'
-export const FIND_USERNAME_SUCCESS = 'FIND_USERNAME_SUCCESS'
-export const FIND_USERNAME_ERROR = 'FIND_USERNAME_ERROR'
+export const GET_USERS_STARTED = 'GET_USERS_STARTED'
+export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS'
+export const GET_USERS_ERROR = 'GET_USERS_ERROR'
 
 export const CREATE_USER_STARTED = 'CREATE_USER_STARTED'
 export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS'
@@ -19,14 +15,14 @@ export const DELETE_USER_ERROR = 'DELETE_USERS_ERROR'
 
 const usersActions = {
 
-  getUser: (data) => async (dispatch) => {
+  getUsers: () => async (dispatch) => {
     try {
       dispatch({
-        type: GET_USER_STARTED,
+        type: GET_USERS_STARTED,
       });
-      let response = await getUser(data);
+      let response = await getUsers()
       dispatch({
-        type: GET_USER_SUCCESS,
+        type: GET_USERS_SUCCESS,
         payload: {
           data: response.res,
         },
@@ -34,28 +30,8 @@ const usersActions = {
     } catch (error) {
       toast.error('ERROR GETTING USERS' + error)
       dispatch({
-        type: GET_USER_ERROR,
+        type: GET_USERS_ERROR,
       });
-    }
-  },
-
-  findUsername: (username) => async (dispatch) => {
-    try {
-      dispatch({
-        type: FIND_USERNAME_STARTED,
-      });
-      let response = await findUsername(username);
-      dispatch({
-        type: FIND_USERNAME_SUCCESS,
-        payload: {
-          message: response.message,
-          result: response.res,
-        }
-      });
-    } catch (error) {
-      dispatch({
-        type: FIND_USERNAME_ERROR,
-      })
     }
   },
 

@@ -12,6 +12,7 @@ class CreateUser extends Component {
     }
 
     componentDidMount() {
+        this.props.dispatch(actions.getUsers());
     }
 
     handleUsernameChange = event => {
@@ -35,6 +36,8 @@ class CreateUser extends Component {
         const { Password } = this.state;
         const { ConfPassword } = this.state;
 
+        let usernameFound = false;
+
         let account = {
             username: Username,
             password: Password,
@@ -45,11 +48,13 @@ class CreateUser extends Component {
             //Check if both passwords are the same
             if (Password === ConfPassword) {
                 //Check if username is already in use
-                this.props.dispatch(actions.findUsername({ username: Username }));
+                for (let i = 0; i < this.props.users.length; i++) {
+                    if (this.props.users[i].username === Username) {
+                        usernameFound = true;
+                    }
+                }
 
-                console.log(this.props.foundUser);
-
-                if (this.props.foundUser !== null) {
+                if (usernameFound) {
                     alert("The username chosen is already in use!");
                 }
                 else {
@@ -58,8 +63,9 @@ class CreateUser extends Component {
 
                     if (this.props.didCreate) {
                         alert("Account successfully created! Redirecting to home page");
-                        localStorage.setItem("username", account.Username);
-                        localStorage.setItem("password", account.pass);
+                        localStorage.setItem("username", Username);
+                        localStorage.setItem("password", Password);
+                        this.props.history.push("/Home");
                     }
                     else {
                         alert("An error occured while trying to create your account");
@@ -117,7 +123,7 @@ class CreateUser extends Component {
 
 const mapStateToProps = state => ({
     didCreate: state.userReducer.didCreate,
-    foundUser: state.userReducer.foundUser,
+    users: state.userReducer.users,
 })
 
 export default connect(mapStateToProps)(CreateUser);

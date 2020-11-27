@@ -5,15 +5,11 @@ const portApi = process.env.NODE_ENV === "development" ? 3001 : 3001;
 
 const baseURLApi = `${hostApi}${portApi ? `:${portApi}` : ``}/api`;
 
-async function getUser(data) {
-  const url = `${baseURLApi}/users/user`;
-  return await axios.post(url, data).then(response => response.data);
+async function getUsers() {
+  const url = `${baseURLApi}/users/users`;
+  return await axios.get(url).then(response => response.data);
 }
 
-async function findUsername(username) {
-  const url = `${baseURLApi}/users/findByUsername`;
-  return await axios.post(url, username).then(response => response.data);
-}
 
 async function deleteUser(data) {
   const url = `${baseURLApi}/users/deleteUser`;
@@ -27,8 +23,7 @@ async function createUser(data) {
 
 
 export {
-  getUser,
+  getUsers,
   createUser,
   deleteUser,
-  findUsername,
 };

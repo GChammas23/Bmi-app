@@ -8,12 +8,12 @@ class HomePage extends Component {
     }
 
 
-    seeReservations = event => {
+    calculateBmi = event => {
         event.preventDefault();
-        this.props.history.push("/Reservations");
+        this.props.history.push("/Compute");
     }
 
-    seeRides = event => {
+    seeProgress = event => {
         event.preventDefault();
         this.props.history.push("/Rides");
     }
@@ -29,16 +29,16 @@ class HomePage extends Component {
                 </div>
                 <div className="card-group">
                     <div className="card" id="home-card">
-                        <div className="card-body">
-                            <img className="card-img-top" src="card1.jpg" alt="Taxi 1"></img>
+                        <div className="card-body" onClick={this.calculateBmi}>
+                            <img className="card-img-top" src="card1.jpg" alt="Calculator"></img>
                             <br />
                             <h2>Calculate</h2>
                             <p>Calculate your bmi</p>
                         </div>
                     </div>
-                    <div className="card" id="home-card">
+                    <div className="card" id="home-card" onClick={this.seeProgress}>
                         <div className="card-body">
-                            <img src="card2.gif" className="card-img-top" alt="Taxi 2"></img>
+                            <img src="card2.gif" className="card-img-top" alt="Graph"></img>
                             <h2>Your graph</h2>
                             <p>Check your bmi values over time</p>
                         </div>

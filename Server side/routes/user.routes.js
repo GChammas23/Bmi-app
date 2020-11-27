@@ -4,8 +4,7 @@ var router = express.Router();
 const users = require('../services/user.service');
 
 router.post('/addUser', users.create);
-router.post('/user', users.getUser);
+router.get('/users', users.getUsers);
 router.post('/deleteUser', users.deleteUser);
-router.post('/findByUsername', users.getUserByUsername);
 
 module.exports = router

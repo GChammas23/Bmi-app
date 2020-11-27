@@ -6,46 +6,17 @@ let url = db.getUrl();
 let databaseName = db.getDatabase();
 let collectionName = db.getAccountCollection();
 
-exports.getUser = (request, response) => {
-  const { username } = request.body;
-  const { password } = request.body;
+exports.getUsers = (request, response) => {
 
   client.connect(url, (err, db) => {
     if (err) throw err;
     let dbo = db.db(databaseName);
-    dbo.collection(collectionName).findOne({ username: username, password: password }, function (err, result) {
+    dbo.collection(collectionName).find({}).toArray(function (err, result) {
       if (err) {
-        response.status(500).send({ message: "An error occured while trying to find the account" });
+        response.status(500).send({ message: "An error occured while trying to find the accounts" });
       }
       else {
-        if(result !== null){
-          response.status(200).send({ message: "An account was found", res: result });
-        }
-        else{
-          response.status(500).send({ message: "No account was found!", res: result});
-        }
-        
-        console.log(result);
-      }
-
-    });
-  })
-};
-
-exports.getUserByUsername = (request, response) => {
-  const { username } = request.body;
-
-  console.log(username);
-
-  client.connect(url, (err, db) => {
-    if (err) throw err;
-    let dbo = db.db(databaseName);
-    dbo.collection(collectionName).findOne({ username: username }, function (err, result) {
-      if (err) {
-        response.status(500).send({ message: "An error occured while trying to find the account" });
-      }
-      else {
-        response.status(200).send({ message: "An account was found", res: result });
+        response.status(200).send({ message: "The accounts were found", res: result });
         console.log(result);
       }
 
