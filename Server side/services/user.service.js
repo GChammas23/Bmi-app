@@ -10,25 +10,43 @@ exports.getUser = (request, response) => {
   const { username } = request.body;
   const { password } = request.body;
 
-  let account = {
-    username: username,
-    password: password,
-  };
-
   client.connect(url, (err, db) => {
     if (err) throw err;
     let dbo = db.db(databaseName);
-    dbo.collection(collectionName).find(account).toArray(function (err, result) {
+    dbo.collection(collectionName).findOne({ username: username, password: password }, function (err, result) {
       if (err) {
         response.status(500).send({ message: "An error occured while trying to find the account" });
       }
       else {
-        if (result.length === 1) {
-          response.status(200).send({ message: "Account found successfully!", res: result });
+        if(result !== null){
+          response.status(200).send({ message: "An account was found", res: result });
         }
-        else {
-          response.status(500).send({ message: "The account couldn't be found!", res: result });
+        else{
+          response.status(500).send({ message: "No account was found!", res: result});
         }
+        
+        console.log(result);
+      }
+
+    });
+  })
+};
+
+exports.getUserByUsername = (request, response) => {
+  const { username } = request.body;
+
+  console.log(username);
+
+  client.connect(url, (err, db) => {
+    if (err) throw err;
+    let dbo = db.db(databaseName);
+    dbo.collection(collectionName).findOne({ username: username }, function (err, result) {
+      if (err) {
+        response.status(500).send({ message: "An error occured while trying to find the account" });
+      }
+      else {
+        response.status(200).send({ message: "An account was found", res: result });
+        console.log(result);
       }
 
     });
@@ -36,17 +54,12 @@ exports.getUser = (request, response) => {
 };
 
 exports.create = (req, response) => {
-  const { Username } = req.body;
-  const { pass } = req.body;
-  const { name } = req.body;
-  const { age } = req.body;
-
+  const { username } = req.body;
+  const { password } = req.body;
 
   let user = {
-    username: Username,
-    password: pass,
-    name: name,
-    age: age,
+    username: username,
+    password: password,
   };
 
   client.connect(url, (err, db) => {
@@ -79,7 +92,6 @@ exports.deleteUser = (req, res) => {
       else {
         res.status(200).send({ data: result, message: "User successfully deleted!" });
       }
-      console.log(result);
       db.close();
     })
   })
