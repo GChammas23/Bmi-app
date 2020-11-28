@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import Footer from './Footer';
 import NavbarComponent from './Navbar';
 
 class HomePage extends Component {
@@ -44,6 +45,7 @@ class HomePage extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
         )
     }

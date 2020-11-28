@@ -19,8 +19,8 @@ app.enable('trust proxy');
 var UserRoutes = require('./routes/user.routes');
 app.use('/api/users', UserRoutes);
 
-//var bmiValuesRoutes = require('./routes/rides.routes');
-//app.use('/api/rides', bmiValuesRoutes);
+var bmiValuesRoutes = require('./routes/bmi.routes');
+app.use('/api/bmi', bmiValuesRoutes);
 
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

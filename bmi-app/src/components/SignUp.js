@@ -61,15 +61,10 @@ class CreateUser extends Component {
                     //Call the actions method
                     this.props.dispatch(actions.createUser(account));
 
-                    if (this.props.didCreate) {
-                        alert("Account successfully created! Redirecting to home page");
-                        localStorage.setItem("username", Username);
-                        localStorage.setItem("password", Password);
-                        this.props.history.push("/Home");
-                    }
-                    else {
-                        alert("An error occured while trying to create your account");
-                    }
+                    alert("Account successfully created! Redirecting to home page");
+                    localStorage.setItem("username", Username);
+                    localStorage.setItem("password", Password);
+                    this.props.history.push("/Home");
                 }
 
             }
@@ -122,7 +117,6 @@ class CreateUser extends Component {
 }
 
 const mapStateToProps = state => ({
-    didCreate: state.userReducer.didCreate,
     users: state.userReducer.users,
 })
 
