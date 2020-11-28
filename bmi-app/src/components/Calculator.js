@@ -49,12 +49,17 @@ class Calculator extends Component {
             weight: weight,
             height: height,
             username: localStorage.getItem("username"),
-            bmi: bmi,
+            bmi: parseFloat(bmi),
         }
 
         let status = this.checkbmiState(bmi);
 
         alert("Your bmi is: " + bmi + ". You are considered: " + status);
+
+        if(status === "Underweight" || status === "Overweight" || status === "Obese"){
+            let idealWeight = 22 * Math.pow(height, 2);
+            alert("An ideal weight for your body would be: " + idealWeight + " kg");
+        }
 
         this.props.dispatch(actions.addBmi(data));
     }
@@ -93,6 +98,7 @@ class Calculator extends Component {
                                 <Slider value={this.state.height}
                                     onChange={this.handleHeightChange}
                                     valueLabelDisplay="auto"
+                                    min={0.5}
                                     max={2.5}
                                     step={0.1} />
                             </div>

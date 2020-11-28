@@ -10,8 +10,13 @@ async function addBmi(data) {
   return await axios.post(url, data).then(response => response.data);
 }
 
+async function getValues(username) {
+  const url = `${baseURLApi}/bmi/getValues`;
+  return await axios.post(url, username).then(response => response.data);
+}
 
 
 export {
   addBmi,
+  getValues,
 };

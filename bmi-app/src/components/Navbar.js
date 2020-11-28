@@ -27,7 +27,7 @@ class NavbarComponent extends Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <Nav.Link className="nav-link" href="/Compute">Calculate</Nav.Link>
-                        <Nav.Link href="/Reservations">Bmi graph</Nav.Link>
+                        <Nav.Link href="/Graph">Your graph</Nav.Link>
                         <NavDropdown title="Account" id="basic-nav-dropdown">
                             <NavDropdown.Item>{this.state.username}</NavDropdown.Item>
                             <NavDropdown.Item href="/DeleteAccount">Delete account</NavDropdown.Item>

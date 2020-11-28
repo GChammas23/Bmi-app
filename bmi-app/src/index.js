@@ -6,6 +6,9 @@ import LoginForm from '../src/components/Login';
 import CreateUser from '../src/components/SignUp';
 import HomePage from '../src/components/Home';
 import Calculator from '../src/components/Calculator';
+import AboutUs from '../src/components/About';
+import Graph from '../src/components/Graph';
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { configureStore, configurePersistor } from './redux/store/store';
@@ -25,6 +28,8 @@ class RouterNavigationSample extends React.Component {
               <Route path="/Signup" render={(props) => <CreateUser {...props} />} />
               <Route path="/Home" render={(props) => <HomePage {...props} />} />
               <Route path="/Compute" render={(props) => <Calculator {...props} />} />
+              <Route path="/Graph" render={(props) => <Graph {...props} />} />
+              <Route path="/AboutUs" render={(props) => <AboutUs {...props} />} />
             </>
           </div>
         </Router>

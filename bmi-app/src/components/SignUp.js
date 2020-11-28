@@ -1,82 +1,11 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
-import actions from '../redux/actions/users';
-import { connect } from 'react-redux';
 
-class CreateUser extends Component {
+class AboutUs extends Component {
     constructor(props) {
         super(props);
-        this.insertNewUser = this.insertNewUser.bind(this);
-        this.state = { Username: '', Password: '', ConfPassword: '' };
     }
-
-    componentDidMount() {
-        this.props.dispatch(actions.getUsers());
-    }
-
-    handleUsernameChange = event => {
-        event.preventDefault();
-        this.setState({ Username: event.target.value });
-    };
-
-    handlePasswordChange = event => {
-        event.preventDefault();
-        this.setState({ Password: event.target.value });
-    };
-
-    handleConfPasswordChange = event => {
-        event.preventDefault();
-        this.setState({ ConfPassword: event.target.value });
-    };
-
-    insertNewUser = event => {
-        event.preventDefault();
-        const { Username } = this.state;
-        const { Password } = this.state;
-        const { ConfPassword } = this.state;
-
-        let usernameFound = false;
-
-        let account = {
-            username: Username,
-            password: Password,
-        }
-
-        //Check if passwords length is valid
-        if (Password.length >= 8 && Password.length <= 20) {
-            //Check if both passwords are the same
-            if (Password === ConfPassword) {
-                //Check if username is already in use
-                for (let i = 0; i < this.props.users.length; i++) {
-                    if (this.props.users[i].username === Username) {
-                        usernameFound = true;
-                    }
-                }
-
-                if (usernameFound) {
-                    alert("The username chosen is already in use!");
-                }
-                else {
-                    //Call the actions method
-                    this.props.dispatch(actions.createUser(account));
-
-                    alert("Account successfully created! Redirecting to home page");
-                    localStorage.setItem("username", Username);
-                    localStorage.setItem("password", Password);
-                    this.props.history.push("/Home");
-                }
-
-            }
-            else {
-                alert("The passwords entered do not match!");
-            }
-        }
-        else {
-            alert("The password should have 8 to 20 characters!");
-        }
-
-    };
 
     render() {
         return (
@@ -116,8 +45,5 @@ class CreateUser extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    users: state.userReducer.users,
-})
 
-export default connect(mapStateToProps)(CreateUser);
+export default AboutUs;

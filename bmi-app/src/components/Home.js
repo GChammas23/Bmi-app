@@ -16,7 +16,7 @@ class HomePage extends Component {
 
     seeProgress = event => {
         event.preventDefault();
-        this.props.history.push("/Rides");
+        this.props.history.push("/Graph");
     }
 
     render() {

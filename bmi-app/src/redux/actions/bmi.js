@@ -1,10 +1,13 @@
-import { addBmi } from '../../actions/bmi.actions';
+import { addBmi, getValues } from '../../actions/bmi.actions';
 
 
-export const ADD_BMI_STARTED = 'CREATE_USER_STARTED'
-export const ADD_BMI_SUCCESS = 'CREATE_USER_SUCCESS'
-export const ADD_BMI_ERROR = 'CREATE_USER_ERROR'
+export const ADD_BMI_STARTED = 'ADD_BMI_STARTED'
+export const ADD_BMI_SUCCESS = 'ADD_BMI_SUCCESS'
+export const ADD_BMI_ERROR = 'ADD_BMI_ERROR'
 
+export const GET_VALUES_STARTED = 'GET_VALUES_STARTED'
+export const GET_VALUES_SUCCESS = 'GET_VALUES_SUCCESS'
+export const GET_VALUES_ERROR = 'GET_VALUES_ERROR'
 
 const bmiActions = {
 
@@ -22,7 +25,26 @@ const bmiActions = {
             });
         } catch (error) {
             dispatch({
-                type: GET_USERS_ERROR,
+                type: ADD_BMI_ERROR,
+            });
+        }
+    },
+
+    getValues: (username) => async (dispatch) => {
+        try {
+            dispatch({
+                type: GET_VALUES_STARTED,
+            });
+            let response = await getValues(username)
+            dispatch({
+                type: GET_VALUES_SUCCESS,
+                payload: {
+                    data: response.result,
+                },
+            });
+        } catch (error) {
+            dispatch({
+                type: GET_VALUES_ERROR,
             });
         }
     },
