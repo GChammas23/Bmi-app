@@ -30,7 +30,6 @@ class NavbarComponent extends Component {
                         <Nav.Link href="/Graph">Your graph</Nav.Link>
                         <NavDropdown title="Account" id="basic-nav-dropdown">
                             <NavDropdown.Item>{this.state.username}</NavDropdown.Item>
-                            <NavDropdown.Item href="/DeleteAccount">Delete account</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item onClick={this.logOutUser}>Log out</NavDropdown.Item>
                         </NavDropdown>
